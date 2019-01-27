@@ -1,8 +1,3 @@
-//When the user visits the page, a small form should appear allowing a user to input their name and a message [x]
-
-//When the user clicks the submit button, it should send an ajax request to the server and display the
-
-
 //Need to write an ajax function and send a request to the server, server being sent is 
 //Need a way to store the data that's being typed in 
   //Need to write a function that senses the click event 
@@ -10,6 +5,7 @@
 
 //Render everything at the end 
 //Response on the screen
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import $ from 'jquery'
@@ -23,10 +19,10 @@ class MovieMaker extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      filtered : this.props.movieSamples
+      filtered : []
    }
-    // this.handleSubmit = this.handleSubmit.bind(this);  
-    // this.handleClick = this.handleClick.bind(this);  
+    this.handleSubmit = this.handleSubmit.bind(this);  
+    this.handleClick = this.handleClick.bind(this);  
     this.addMovie = this.addMovie.bind(this);
   }
 
@@ -45,6 +41,8 @@ class MovieMaker extends React.Component {
   //     filtered: nextProps.movieSamples
   //   })
   // }
+
+
   addMovie(event){
     event.preventDefault();
     let list = this.props.movieSamples;
@@ -63,59 +61,88 @@ class MovieMaker extends React.Component {
     }
   }
   
-  // handleSubmit(event){
-  //   let currentList = [];
-  //   let newList = [];
-  //   //If what's plugged in isn't an empty string
-  //   if (event.target.value !== ''){
-  //     currentList = this.props.movieSamples;
-  //     newList = currentList.filter(item => {
-  //       let itemLowerCase = item.toLowerCase();
-  //       let dataValue = event.target.value.toLowerCase();
-  //       return itemLowerCase.includes(dataValue);
-  //     });
-  //   } else{
-  //     newList = this.props.movieSamples;
-  //   }
-  //   this.setState({
-  //     filtered: newList
-  //   });
-  // }
- 
-  // handleClick(event){
-  //   event.preventDefault();
-  //   //need to create functionality for it to use the search bar value and look up items with the same string name
-  //   console.log("this worked");
-  // }
- 
-  
-  render() {
-    return (
-      <div> 
-        <h2> Movie List </h2>
-          <div>
-            <form className="form" id="addItemForm">
-              <input 
-                type="text"
-                className="input"
-                id="addInput"
-                placeholder="Add movie title"
-              />
-              <button className="addMovie" onClick={this.addMovie}> Add Movie!</button>
-          </form>
-
-          </div>
-          <div className="movieList">
-            <div><MovieList movies={sampleMovies}/></div>
-          </div> 
-      </div>
-    )
+  handleSubmit(event){
+    event.preventDefault()
+    let currentList = this.props.movieSamples;
+    var newList;
+    var movieSearch = document.getElementById('input');
+    if (movieSearch !== ''){
+      newList = currentList.filter(item => {
+        let itemLowerCase = item.title.toLowerCase();
+        let dataValue = event.target.value.toLowerCase();
+        return itemLowerCase.includes(dataValue);
+      });
+    } 
+    // console.log(newList)
+    this.setState({
+      filtered: newList
+    });
   }
+ 
+handleClick(event){
+    event.preventDefault()
+    let currentList = this.props.movieSamples;
+    var newList;
+    var movieSearch = document.getElementById('input');
+    if (movieSearch !== ''){
+      newList = currentList.filter(item => {
+        let itemLowerCase = item.title.toLowerCase();
+        let dataValue = movieSearch.value.toLowerCase();
+        console.log(dataValue);
+        return itemLowerCase.includes(dataValue);
+      });
+    } 
+
+    if (newList.length < 1){
+      console.log('hi')
+      newList = [{title : "Sorry there is no movie with that match"}]
+    }
+
+    console.log(newList)
+    this.setState({
+      filtered: newList
+    });
+    searchForm.reset();
 }
 
-// }
+render() {
+  return (
+    <div> 
+      <h2> Movie List </h2>
+        <div>
+          <form className="form" id="addItemForm">
+            <input 
+              type="text"
+              id="addInput"
+              placeholder="Add movie title"
+            />
+            <button className="addMovie" onClick={this.addMovie}> Add Movie!</button>
+        </form>
+         <form id="searchForm">
+           <input type="text" 
+            id="input" 
+            onChange={this.handleSubmit} 
+            placeholder="Search..." 
+           />
+           <button className="go" onClick={this.handleClick}> GO! </button>
+         </form>
 
+        </div>
+        <div className="movieList">
+          <div><MovieList movies={this.state.filtered}/></div>
+        </div> 
+    </div>
+  )
+}
+}
+
+ 
 
 
 
 export default MovieMaker; 
+
+
+
+
+
