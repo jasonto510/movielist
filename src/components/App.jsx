@@ -22,10 +22,11 @@ class MovieMaker extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      filtered : []
+      filtered : this.props.movieSamples
     }
-    this.handleSubmit = this.handleSubmit.bind(this);  
-    this.handleClick = this.handleClick.bind(this);  
+    // this.handleSubmit = this.handleSubmit.bind(this);  
+    // this.handleClick = this.handleClick.bind(this);  
+    this.addMovie = this.addMovie.bind(this);
   }
   
   //When the paid loads, the 
@@ -43,38 +44,68 @@ class MovieMaker extends React.Component {
   //     filtered: nextProps.movieSamples
   //   })
   // }
-
-  
-  handleSubmit(event){
-    let currentList = [];
-    let newList = [];
-    //If what's plugged in isn't an empty string
-    if (event.target.value !== ''){
-      currentList = this.props.movieSamples;
-      newList = currentList.filter(item => {
-        let itemLowerCase = item.toLowerCase();
-        let dataValue = event.target.value.toLowerCase();
-        return itemLowerCase.includes(dataValue);
-      });
-    } else{
-      newList = this.props.movieSamples;
-    }
-    this.setState({
-      filtered: newList
-    });
-  }
- 
-  handleClick(event){
+  addMovie(event){
     event.preventDefault();
-    //need to create functionality for it to use the search bar value and look up items with the same string name
-    console.log("this worked");
+    let list = this.state.filtered;
+    const newItem = document.getElementById("addInput");
+    const form = document.getElementById("addItemForm");
+    //The case where it's undefined
+    if (newItem.value !== ""){
+      list.push({title: `${newItem.value}`});
+
+      this.setState({
+        filtered : list
+      });
+      newItem.classList.remove("is-danger")
+
+      form.reset();
+    } else{
+      newItem.classList.add("is-danger")
+    }
   }
+  
+  // handleSubmit(event){
+  //   let currentList = [];
+  //   let newList = [];
+  //   //If what's plugged in isn't an empty string
+  //   if (event.target.value !== ''){
+  //     currentList = this.props.movieSamples;
+  //     newList = currentList.filter(item => {
+  //       let itemLowerCase = item.toLowerCase();
+  //       let dataValue = event.target.value.toLowerCase();
+  //       return itemLowerCase.includes(dataValue);
+  //     });
+  //   } else{
+  //     newList = this.props.movieSamples;
+  //   }
+  //   this.setState({
+  //     filtered: newList
+  //   });
+  // }
+ 
+  // handleClick(event){
+  //   event.preventDefault();
+  //   //need to create functionality for it to use the search bar value and look up items with the same string name
+  //   console.log("this worked");
+  // }
  
   
   render() {
     return (
       <div> 
         <h2> Movie List </h2>
+          <div>
+            <form className="form" id="addItemForm">
+              <input 
+                type="text"
+                className="input"
+                id="addInput"
+                placeholder="Add movie title"
+              />
+              <button className="addMovie" onClick={this.addItem}> Add Movie!</button>
+          </form>
+
+          </div>
           <input type="text" className="input" onChange={this.handleSubmit} placeholder="Search..." />
           <input type="submit" onClick={this.handleClick} value="Go!" />          
           <div className="movieList">
