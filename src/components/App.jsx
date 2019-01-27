@@ -23,18 +23,13 @@ class MovieMaker extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      filtered : [
-        { title: "The Shining", description: "this is a movie"},
-        { title: "Batman Begins", description: "this is a movie"},
-        { title: "Batman Returns", description: "this is a movie"},
-        { title: "Batman the Dark Night Rises ", description: "this is a movie"}
-      ]
+      filtered : this.props.movieSamples
    }
     // this.handleSubmit = this.handleSubmit.bind(this);  
     // this.handleClick = this.handleClick.bind(this);  
     this.addMovie = this.addMovie.bind(this);
   }
-  
+
   //When the paid loads, the movies will show up on the screen
   componentDidMount(){
     this.setState({
@@ -53,19 +48,18 @@ class MovieMaker extends React.Component {
   addMovie(event){
     event.preventDefault();
     let list = this.props.movieSamples;
+    console.log(list);
     var newItem = document.getElementById("addInput");
     var form = document.getElementById("addItemForm");
         //The case where it's undefined
     if (newItem.value !== ""){
       console.log(newItem.value)
       list.push({title: newItem.value});
-
       this.setState({
         filtered : list
       });
-      // newItem.classList.remove("is-danger")
-    } else{
-      newItem.classList.add("is-danger")
+      //Resets the form everytime it's clicked
+      form.reset();
     }
   }
   
@@ -107,14 +101,12 @@ class MovieMaker extends React.Component {
                 id="addInput"
                 placeholder="Add movie title"
               />
-              <button className="addMovie" onClick={this.addItem}> Add Movie!</button>
+              <button className="addMovie" onClick={this.addMovie}> Add Movie!</button>
           </form>
 
           </div>
           <div className="movieList">
-            <u1>
             <div><MovieList movies={sampleMovies}/></div>
-            </u1>
           </div> 
       </div>
     )
