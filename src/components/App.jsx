@@ -16,20 +16,26 @@ import $ from 'jquery'
 import sampleMovies from './sampleMovieData.js'
 import MovieList from './MovieList.jsx'
 import MovieListEntry from './MovieListEntry.jsx'
+// import Search from './Search.jsx'
 
 
 class MovieMaker extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      filtered : this.props.movieSamples
-    }
+      filtered : [
+        { title: "The Shining", description: "this is a movie"},
+        { title: "Batman Begins", description: "this is a movie"},
+        { title: "Batman Returns", description: "this is a movie"},
+        { title: "Batman the Dark Night Rises ", description: "this is a movie"}
+      ]
+   }
     // this.handleSubmit = this.handleSubmit.bind(this);  
     // this.handleClick = this.handleClick.bind(this);  
     this.addMovie = this.addMovie.bind(this);
   }
   
-  //When the paid loads, the 
+  //When the paid loads, the movies will show up on the screen
   componentDidMount(){
     this.setState({
       filtered: this.props.movieSamples
@@ -46,19 +52,18 @@ class MovieMaker extends React.Component {
   // }
   addMovie(event){
     event.preventDefault();
-    let list = this.state.filtered;
-    const newItem = document.getElementById("addInput");
-    const form = document.getElementById("addItemForm");
-    //The case where it's undefined
+    let list = this.props.movieSamples;
+    var newItem = document.getElementById("addInput");
+    var form = document.getElementById("addItemForm");
+        //The case where it's undefined
     if (newItem.value !== ""){
-      list.push({title: `${newItem.value}`});
+      console.log(newItem.value)
+      list.push({title: newItem.value});
 
       this.setState({
         filtered : list
       });
-      newItem.classList.remove("is-danger")
-
-      form.reset();
+      // newItem.classList.remove("is-danger")
     } else{
       newItem.classList.add("is-danger")
     }
@@ -106,31 +111,19 @@ class MovieMaker extends React.Component {
           </form>
 
           </div>
-          <input type="text" className="input" onChange={this.handleSubmit} placeholder="Search..." />
-          <input type="submit" onClick={this.handleClick} value="Go!" />          
           <div className="movieList">
+            <u1>
             <div><MovieList movies={sampleMovies}/></div>
+            </u1>
           </div> 
       </div>
     )
   }
 }
 
-          // <input type="submit" value="Go!" />     
-    //   <div>
-    //     <h2>Movie List:</h2>
-    //     <form onSubmit={this.handleSubmit}>
-    // <input type="text" className="input" placeholder="Search..." />
-    // <input type="submit" value="Go!" />
-    //     {this.state.movies.map(movie => (
-    //       <li key={movie.id}>
-    //         <label>
-    //           <span>{movie.title}</span>
-    //         </label>
-    //       </li>
-    //     ))}
-    //     </form>
-    //   </div>
+// }
+
+
 
 
 export default MovieMaker; 
