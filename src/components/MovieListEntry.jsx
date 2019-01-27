@@ -10,3 +10,4 @@ var MovieListEntry = (props) => (
 
 
 export default MovieListEntry 
+    // <div className = "movieDescription">{props.movie.description}</div>

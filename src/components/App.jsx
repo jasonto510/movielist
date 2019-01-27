@@ -21,40 +21,62 @@ import MovieListEntry from './MovieListEntry.jsx'
 class MovieMaker extends React.Component {
   constructor(props) {
     super(props)
-    // this.state = {
-    //   movies: [
-    //     { title: "Hackers"},
-    //     { title: "The Grey"},
-    //     { title: "Sunshine"},
-    //     { title: "Ex Machina"},
-    //     { title: "Mean Girls"}
-    //   ]
-    // }
-    // this.handleSubmit = this.handleSubmit.bind(this)    
+    this.state = {
+      filtered : []
+    }
+    this.handleSubmit = this.handleSubmit.bind(this);  
+    this.handleClick = this.handleClick.bind(this);  
   }
   
-  //  handleSubmit(event){ 
-  //   //movies equals all of the movie titles
-  //   movies = this.props.movie.title 
-  // for (var i = 0; i < movies.length; i++){
-  //   if (movies[i] === event.target.value){
-  //     return movies[i]
-  // }
-  // }
-  //   //need to check what's in the search bar 
-  //     //If what's in the search bar matches a movie title 
-  //       //return movie title
-  //     //Else show nothing    
+  //When the paid loads, the 
+  componentDidMount(){
+    this.setState({
+      filtered: this.props.movieSamples
+    });
+  }
+
+
+  //Whenever we receive a new prop we want to rerender our data 
+    //When something gets added or removed 
+  // componentDidReceiveProp(nextProps){ 
+  //   this.setState({
+  //     filtered: nextProps.movieSamples
+  //   })
   // }
 
+  
+  handleSubmit(event){
+    let currentList = [];
+    let newList = [];
+    //If what's plugged in isn't an empty string
+    if (event.target.value !== ''){
+      currentList = this.props.movieSamples;
+      newList = currentList.filter(item => {
+        let itemLowerCase = item.toLowerCase();
+        let dataValue = event.target.value.toLowerCase();
+        return itemLowerCase.includes(dataValue);
+      });
+    } else{
+      newList = this.props.movieSamples;
+    }
+    this.setState({
+      filtered: newList
+    });
+  }
+ 
+  handleClick(event){
+    event.preventDefault();
+    //need to create functionality for it to use the search bar value and look up items with the same string name
+    console.log("this worked");
+  }
  
   
   render() {
     return (
       <div> 
         <h2> Movie List </h2>
-          <input type="text" className="input" placeholder="Search..." />
-          <input type="submit" value="Go!" />     
+          <input type="text" className="input" onChange={this.handleSubmit} placeholder="Search..." />
+          <input type="submit" onClick={this.handleClick} value="Go!" />          
           <div className="movieList">
             <div><MovieList movies={sampleMovies}/></div>
           </div> 
@@ -63,6 +85,7 @@ class MovieMaker extends React.Component {
   }
 }
 
+          // <input type="submit" value="Go!" />     
     //   <div>
     //     <h2>Movie List:</h2>
     //     <form onSubmit={this.handleSubmit}>
