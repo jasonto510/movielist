@@ -33976,6 +33976,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _sampleMovieData_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./sampleMovieData.js */ "./src/components/sampleMovieData.js");
+/* harmony import */ var _MovieList_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./MovieList.jsx */ "./src/components/MovieList.jsx");
+/* harmony import */ var _MovieListEntry_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./MovieListEntry.jsx */ "./src/components/MovieListEntry.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33994,8 +33997,6 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-//When the user visits the page, a small form should appear allowing a user to input their name and a message [x]
-//When the user clicks the submit button, it should send an ajax request to the server and display the
 //Need to write an ajax function and send a request to the server, server being sent is 
 //Need a way to store the data that's being typed in 
 //Need to write a function that senses the click event 
@@ -34005,6 +34006,9 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 
 
+
+
+ // import Search from './Search.jsx'
 
 var MovieMaker =
 /*#__PURE__*/
@@ -34018,55 +34022,136 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(MovieMaker).call(this, props));
     _this.state = {
-      movies: [{
-        title: "Hackers"
-      }, {
-        title: "The Grey"
-      }, {
-        title: "Sunshine"
-      }, {
-        title: "Ex Machina"
-      }, {
-        title: "Mean Girls"
-      }]
+      filtered: []
     };
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleClick = _this.handleClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.addMovie = _this.addMovie.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onClickButton = _this.onClickButton.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
-  }
+  } //When the paid loads, the movies will show up on the screen
+
 
   _createClass(MovieMaker, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.setState({
+        filtered: this.props.movieSamples
+      });
+    } //Whenever we receive a new prop we want to rerender our data 
+    //When something gets added or removed 
+    // componentDidReceiveProp(nextProps){ 
+    //   this.setState({
+    //     filtered: nextProps.movieSamples
+    //   })
+    // }
+
+  }, {
+    key: "addMovie",
+    value: function addMovie(event) {
+      event.preventDefault();
+      var list = this.props.movieSamples;
+      console.log(list);
+      var newItem = document.getElementById("addInput");
+      var form = document.getElementById("addItemForm"); //The case where it's undefined
+
+      if (newItem.value !== "") {
+        console.log(newItem.value);
+        list.push({
+          title: newItem.value
+        });
+        this.setState({
+          filtered: list
+        }); //Resets the form everytime it's clicked
+
+        form.reset();
+      }
+    }
+  }, {
     key: "handleSubmit",
     value: function handleSubmit(event) {
-      //movies equals all of the movie titles
-      movies = this.props.movie.title;
+      event.preventDefault();
+      var currentList = this.props.movieSamples;
+      var newList;
+      var movieSearch = document.getElementById('input');
 
-      for (var i = 0; i < movies.length; i++) {
-        if (movies[i] === event.target.value) {
-          return movies[i];
-        }
-      } //need to check what's in the search bar 
-      //If what's in the search bar matches a movie title 
-      //return movie title
-      //Else show nothing    
+      if (movieSearch !== '') {
+        newList = currentList.filter(function (item) {
+          var itemLowerCase = item.title.toLowerCase();
+          var dataValue = event.target.value.toLowerCase();
+          return itemLowerCase.includes(dataValue);
+        });
+      } // console.log(newList)
 
+
+      this.setState({
+        filtered: newList
+      });
+    }
+  }, {
+    key: "handleClick",
+    value: function handleClick(event) {
+      event.preventDefault();
+      var currentList = this.props.movieSamples;
+      var newList;
+      var movieSearch = document.getElementById('input');
+
+      if (movieSearch !== '') {
+        newList = currentList.filter(function (item) {
+          var itemLowerCase = item.title.toLowerCase();
+          var dataValue = movieSearch.value.toLowerCase();
+          console.log(dataValue);
+          return itemLowerCase.includes(dataValue);
+        });
+      }
+
+      if (newList.length < 1) {
+        console.log('hi');
+        newList = [{
+          title: "Sorry there is no movie with that match"
+        }];
+      }
+
+      console.log(newList);
+      this.setState({
+        filtered: newList
+      });
+      searchForm.reset();
+    }
+  }, {
+    key: "onClickButton",
+    value: function onClickButton(event) {
+      console.log('hi');
     }
   }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Movie List:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        onSubmit: this.handleSubmit
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, " Movie List "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        className: "form",
+        id: "addItemForm"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
-        className: "input",
+        id: "addInput",
+        placeholder: "Add movie title"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "addMovie",
+        onClick: this.addMovie
+      }, " Add Movie!")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        id: "searchForm"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "text",
+        id: "input",
+        onChange: this.handleSubmit,
         placeholder: "Search..."
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-        type: "submit",
-        value: "Go!"
-      }), this.state.movies.map(function (movie) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-          key: movie.id
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, movie.title)));
-      })));
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "go",
+        onClick: this.handleClick
+      }, " GO! "))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "movieList"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_MovieList_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        movies: this.state.filtered,
+        onClickButton: this.onClickButton
+      }))));
     }
   }]);
 
@@ -34074,6 +34159,91 @@ function (_React$Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
 /* harmony default export */ __webpack_exports__["default"] = (MovieMaker);
+
+/***/ }),
+
+/***/ "./src/components/MovieList.jsx":
+/*!**************************************!*\
+  !*** ./src/components/MovieList.jsx ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _MovieListEntry_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MovieListEntry.jsx */ "./src/components/MovieListEntry.jsx");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
+
+
+ //This can be static because it just iterates through the movie list 
+
+var MovieList = function MovieList(props) {
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "movieList"
+  }, props.movies.map(function (movie) {
+    return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_MovieListEntry_jsx__WEBPACK_IMPORTED_MODULE_0__["default"], {
+      movie: movie,
+      clicker: props.onClickButton
+    });
+  }));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (MovieList);
+
+/***/ }),
+
+/***/ "./src/components/MovieListEntry.jsx":
+/*!*******************************************!*\
+  !*** ./src/components/MovieListEntry.jsx ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _MovieList_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MovieList.jsx */ "./src/components/MovieList.jsx");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+
+var MovieListEntry = function MovieListEntry(props) {
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "movieListEntry"
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "movieTitles",
+    onClick: function onClick() {
+      props.clicker(props.movie);
+    }
+  }, props.movie.title));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (MovieListEntry);
+
+/***/ }),
+
+/***/ "./src/components/sampleMovieData.js":
+/*!*******************************************!*\
+  !*** ./src/components/sampleMovieData.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var sampleMovies = [// { title: "Charlie and the Chocolate Factory", description: "this is a movie"},
+  // { title: "The Shining", description: "this is a movie"},
+  // { title: "Batman Begins", description: "this is a movie"},
+  // { title: "Batman Returns", description: "this is a movie"},
+  // { title: "Batman the Dark Night Rises ", description: "this is a movie"}
+];
+/* harmony default export */ __webpack_exports__["default"] = (sampleMovies);
 
 /***/ }),
 
@@ -34091,11 +34261,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _components_App_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/App.jsx */ "./src/components/App.jsx");
+/* harmony import */ var _components_sampleMovieData_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/sampleMovieData.js */ "./src/components/sampleMovieData.js");
+
 
 
  //rendering all of the componenets from App
 
-react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_App_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], null), document.getElementById('app'));
+react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_App_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  movieSamples: _components_sampleMovieData_js__WEBPACK_IMPORTED_MODULE_3__["default"]
+}), document.getElementById('app')); //need to add movies here
 
 /***/ })
 
