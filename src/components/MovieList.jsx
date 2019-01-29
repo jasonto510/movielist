@@ -5,10 +5,10 @@ import ReactDOM from 'react-dom'
 var MovieList = (props) => (
   <div className = "movieList">
     {props.movies.map(movie => 
-      <MovieListEntry movie={movie}/>
-      )}
+      <MovieListEntry movie={movie} clicker={props.onClickButton}/>
+    )}
   </div>
-  )
+  );
 
 
 export default MovieList;

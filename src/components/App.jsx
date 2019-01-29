@@ -19,11 +19,13 @@ class MovieMaker extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      filtered : []
+      filtered : [],
+      isToggleOn : true
    }
     this.handleSubmit = this.handleSubmit.bind(this);  
     this.handleClick = this.handleClick.bind(this);  
     this.addMovie = this.addMovie.bind(this);
+    this.onClickButton = this.onClickButton.bind(this);
   }
 
   //When the paid loads, the movies will show up on the screen
@@ -94,7 +96,6 @@ handleClick(event){
     } 
 
     if (newList.length < 1){
-      console.log('hi')
       newList = [{title : "Sorry there is no movie with that match"}]
     }
 
@@ -103,6 +104,15 @@ handleClick(event){
       filtered: newList
     });
     searchForm.reset();
+}
+
+onClickButton(event){
+  //Need to add a watch and to watch section for every toggle getting clicked 
+  this.setState(state => ({
+    isToggleOn : !state.isToggleOn
+  }));
+  // console.log('hi')
+  alert("YOU'VE WATCHED THE MOVIE");
 }
 
 render() {
@@ -116,20 +126,21 @@ render() {
               id="addInput"
               placeholder="Add movie title"
             />
-            <button className="addMovie" onClick={this.addMovie}> Add Movie!</button>
+            <button className="addMovie" onClick={this.addMovie}>Add Movie!</button>
         </form>
-         <form id="searchForm">
-           <input type="text" 
+
+        <form id="searchForm">
+          <input type="text" 
             id="input" 
             onChange={this.handleSubmit} 
             placeholder="Search..." 
-           />
-           <button className="go" onClick={this.handleClick}> GO! </button>
-         </form>
+          />
+          <button className="go" onClick={this.handleClick}> GO! </button>
+        </form>
 
         </div>
         <div className="movieList">
-          <div><MovieList movies={this.state.filtered}/></div>
+          <div><MovieList movies={this.state.filtered} onClickButton={this.state.isToggleOn ? 'WATCHED' : 'NOT WATCHED'}/></div>
         </div> 
     </div>
   )

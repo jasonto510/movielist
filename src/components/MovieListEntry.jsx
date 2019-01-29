@@ -4,10 +4,12 @@ import ReactDOM from 'react-dom'
 
 var MovieListEntry = (props) => (
   <div className = "movieListEntry">
-    <div className = "movieTitles">{props.movie.title}</div>
+    <div className = "movieTitles" onClick={ ()=> {props.clicker(props.movie)} }>
+    {props.movie.title}  
+    <button className="movieWatched"></button>
+    </div>
   </div>
 )
 
 
 export default MovieListEntry 
-    // <div className = "movieDescription">{props.movie.description}</div>

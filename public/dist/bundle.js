@@ -34022,7 +34022,8 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(MovieMaker).call(this, props));
     _this.state = {
-      filtered: []
+      filtered: [],
+      isToggleOn: true
     };
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleClick = _this.handleClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -34106,7 +34107,6 @@ function (_React$Component) {
       }
 
       if (newList.length < 1) {
-        console.log('hi');
         newList = [{
           title: "Sorry there is no movie with that match"
         }];
@@ -34121,7 +34121,14 @@ function (_React$Component) {
   }, {
     key: "onClickButton",
     value: function onClickButton(event) {
-      console.log('hi');
+      //Need to add a watch and to watch section for every toggle getting clicked 
+      this.setState(function (state) {
+        return {
+          isToggleOn: !state.isToggleOn
+        };
+      }); // console.log('hi')
+
+      alert("YOU'VE WATCHED THE MOVIE");
     }
   }, {
     key: "render",
@@ -34136,7 +34143,7 @@ function (_React$Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         className: "addMovie",
         onClick: this.addMovie
-      }, " Add Movie!")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+      }, "Add Movie!")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         id: "searchForm"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
@@ -34150,7 +34157,7 @@ function (_React$Component) {
         className: "movieList"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_MovieList_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
         movies: this.state.filtered,
-        onClickButton: this.onClickButton
+        onClickButton: this.state.isToggleOn ? 'WATCHED' : 'NOT WATCHED'
       }))));
     }
   }]);
@@ -34221,7 +34228,9 @@ var MovieListEntry = function MovieListEntry(props) {
     onClick: function onClick() {
       props.clicker(props.movie);
     }
-  }, props.movie.title));
+  }, props.movie.title, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+    className: "movieWatched"
+  })));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (MovieListEntry);
